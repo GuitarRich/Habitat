@@ -23,7 +23,6 @@
     public void NewsList_ShouldReturnViewResult(Db db, string itemName, ID itemId, INewsRepositoryFactory factory)
     {
       //Arrange
-      var newsController = new NewsController();
       var controller = new NewsController(factory);
       db.Add(new DbItem(itemName, itemId, Templates.NewsFolder.ID));
       var contextItem = db.GetItem(itemId);
