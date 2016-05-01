@@ -53,6 +53,10 @@
       <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SimpleInjector, Version=3.1.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\SimpleInjector.3.1.2\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Sitecore.Analytics">
       <HintPath>..\..\..\..\lib\Sitecore\Sitecore.Analytics.dll</HintPath>
     </Reference>
@@ -188,6 +192,7 @@
     <Compile Include="Models\Referral.cs" />
     <Compile Include="Models\Visits.cs" />
     <Compile Include="Models\Repository\VisitsRepository.cs" />
+    <Compile Include="Pipelines\InitializeDependencyInjection\RegisterServices.cs" />
     <Compile Include="Pipelines\RegisterWebApiRoutes.cs" />
     <Compile Include="Services\BehaviorProfileDecorator.cs" />
     <Compile Include="Services\ProfileProvider.cs" />
@@ -202,6 +207,10 @@
     <ProjectReference Include="..\..\..\Foundation\Alerts\code\Sitecore.Foundation.Alerts.csproj">
       <Project>{5cf5fa06-ab27-4df5-a471-ed57ef3e4ae9}</Project>
       <Name>Sitecore.Foundation.Alerts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\Sitecore.Foundation.DependencyInjection.csproj">
+      <Project>{3892870b-1d18-4395-bdfb-beaa1b267a54}</Project>
+      <Name>Sitecore.Foundation.DependencyInjection</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\foundation\SitecoreExtensions\code\Sitecore.Foundation.SitecoreExtensions.csproj">
       <Project>{B535703F-8D07-4F23-A533-2974BB4CC7B1}</Project>

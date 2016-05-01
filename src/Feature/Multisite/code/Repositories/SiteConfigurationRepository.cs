@@ -12,10 +12,6 @@
   {
     private readonly ISiteDefinitionsProvider siteDefinitionsProvider;
 
-    public SiteConfigurationRepository() : this(new ItemSiteDefinitionsProvider())
-    {
-    }
-
     public SiteConfigurationRepository(ISiteDefinitionsProvider itemSiteDefinitionsProvider)
     {
       siteDefinitionsProvider = itemSiteDefinitionsProvider;

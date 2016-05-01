@@ -5,10 +5,7 @@
   public class SearchServiceRepository : ISearchServiceRepository
   {
     private readonly ISearchSettingsRepository settingsRepository;
-    public SearchServiceRepository(): this(new SearchSettingsRepository())
-    {
-    }
-
+    
     public SearchServiceRepository(ISearchSettingsRepository settingsRepository)
     {
       this.settingsRepository = settingsRepository;
