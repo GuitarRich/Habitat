@@ -15,7 +15,7 @@
             Log.Info("Start dependency injection initialization", this);
 
             // Create the container
-            var container = new Container();
+            var container = DependencyInjection.Container.CreateContainer();
 
             // start the pipeline to register all dependencies
             var dependencyInjectionArgs = new InitializeDependencyInjectionArgs(container);

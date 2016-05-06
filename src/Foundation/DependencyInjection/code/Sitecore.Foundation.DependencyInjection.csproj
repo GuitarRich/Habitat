@@ -125,6 +125,7 @@
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Container.cs" />
     <Compile Include="Pipelines\InitializeDependencyInjectionArgs.cs" />
     <Compile Include="Pipelines\Initialize\InitializeDependencyInjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
