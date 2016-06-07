@@ -12,6 +12,7 @@
   using Sitecore.Feature.Multisite.Controllers;
   using Sitecore.Feature.Multisite.Models;
   using Sitecore.Feature.Multisite.Repositories;
+  using Sitecore.Foundation.Multisite.Providers;
   using Xunit;
 
    
@@ -29,7 +30,7 @@
     [AutoDbData]
     public void DefaultConstructor_ShouldNotThrow()
     {
-      Action action = () => new MultisiteController();
+      Action action = () => new MultisiteController(new SiteConfigurationRepository(new ItemSiteDefinitionsProvider()));
       action.ShouldNotThrow();
     }
   }

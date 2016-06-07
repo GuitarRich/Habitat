@@ -58,6 +58,10 @@
       <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SimpleInjector, Version=3.1.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\SimpleInjector.3.1.2\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Sitecore.ContentSearch">
       <HintPath>..\..\..\..\lib\Sitecore\Sitecore.ContentSearch.dll</HintPath>
     </Reference>
@@ -116,6 +120,7 @@
   <ItemGroup>
     <Compile Include="Models\PagedSearchResults.cs" />
     <Compile Include="Models\PagingSettings.cs" />
+    <Compile Include="Pipelines\InitializeDependencyInjection\RegisterServices.cs" />
     <Compile Include="Repositories\QueryRepository.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Models\SearchQuery.cs" />
@@ -136,6 +141,7 @@
   <ItemGroup>
     <Content Include="App_Config\Include\Feature\Feature.Search.Serialization.config" />
     <Content Include="packages.config" />
+    <Content Include="App_Config\Include\Feature\Feature.Search.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="Views\Search\GlobalSearch.cshtml" />
     <Content Include="Views\Search\SearchResults.cshtml" />
@@ -154,6 +160,10 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\Sitecore.Foundation.DependencyInjection.csproj">
+      <Project>{3892870b-1d18-4395-bdfb-beaa1b267a54}</Project>
+      <Name>Sitecore.Foundation.DependencyInjection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\foundation\Indexing\code\Sitecore.Foundation.Indexing.csproj">
       <Project>{80213f24-577f-4f0b-a3b8-62485ea4d2f3}</Project>
       <Name>Sitecore.Foundation.Indexing</Name>

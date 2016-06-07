@@ -9,10 +9,6 @@
   {
     private readonly INewsRepositoryFactory newsRepositoryFactory;
 
-    public NewsController() : this(new NewsRepositoryFactory())
-    {
-    }
-
     public NewsController(INewsRepositoryFactory newsRepositoryFactory)
     {
       this.newsRepositoryFactory = newsRepositoryFactory;

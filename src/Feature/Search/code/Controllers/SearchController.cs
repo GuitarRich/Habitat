@@ -14,10 +14,6 @@
     private readonly QueryRepository queryRepository;
     private readonly IRenderingPropertiesRepository renderingPropertiesRepository;
 
-    public SearchController(): this(new SearchServiceRepository(), new SearchSettingsRepository(), new QueryRepository(), new RenderingPropertiesRepository())
-    {
-    }
-
     public SearchController(ISearchServiceRepository serviceRepository, ISearchSettingsRepository settingsRepository, QueryRepository queryRepository, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       this.searchServiceRepository = serviceRepository;

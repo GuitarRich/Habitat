@@ -17,10 +17,7 @@ namespace Sitecore.Feature.Demo.Controllers
   {
     private readonly IContactProfileProvider contactProfileProvider;
     private readonly IProfileProvider profileProvider;
-
-    public DemoController() : this(new ContactProfileProvider(), new ProfileProvider())
-    {
-    }
+        
 
     public DemoController(IContactProfileProvider contactProfileProvider, IProfileProvider profileProvider)
     {
