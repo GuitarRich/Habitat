@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Foundation.SitecoreExtensions", "src\foundation\SitecoreExtensions\code\Sitecore.Foundation.SitecoreExtensions.csproj", "{B535703F-8D07-4F23-A533-2974BB4CC7B1}"
 EndProject
@@ -189,6 +189,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Foundation.FieldEditor.Tests", "src\Foundation\FieldEditor\tests\Sitecore.Foundation.FieldEditor.Tests.csproj", "{F1585C81-8BFD-44D5-8601-C4A4CF5BEA33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Feature.Teasers.Tests", "src\Feature\Teasers\tests\Sitecore.Feature.Teasers.Tests.csproj", "{E2E3E9FC-15EB-4212-A6BD-A0D9590541E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fortis", "Fortis", "{8D83D1AA-378D-48CB-9EA2-AE756B3D9473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Feature.Navigation.Model", "src\Feature\Navigation\model\Sitecore.Feature.Navigation.Model.csproj", "{799D02D4-0423-4059-B1AA-501FA1EB2116}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Foundation.Fortis", "src\Foundation\Fortis\code\Sitecore.Foundation.Fortis.csproj", "{D1EA57A5-82FB-472D-97CE-A8927CAA154B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -596,6 +602,22 @@ Global
 		{E2E3E9FC-15EB-4212-A6BD-A0D9590541E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2E3E9FC-15EB-4212-A6BD-A0D9590541E4}.Release|x64.ActiveCfg = Release|Any CPU
 		{E2E3E9FC-15EB-4212-A6BD-A0D9590541E4}.Release|x64.Build.0 = Release|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Debug|x64.Build.0 = Debug|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Release|x64.ActiveCfg = Release|Any CPU
+		{799D02D4-0423-4059-B1AA-501FA1EB2116}.Release|x64.Build.0 = Release|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Debug|x64.Build.0 = Debug|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Release|x64.ActiveCfg = Release|Any CPU
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -683,5 +705,8 @@ Global
 		{812C16C9-1E8A-42DC-A1C0-6896D570F63A} = {6B260718-681F-41DB-AAFE-13BA15BB6711}
 		{F1585C81-8BFD-44D5-8601-C4A4CF5BEA33} = {6B260718-681F-41DB-AAFE-13BA15BB6711}
 		{E2E3E9FC-15EB-4212-A6BD-A0D9590541E4} = {8AE5D37C-D340-4D66-8BAE-48A7ED60BCE8}
+		{8D83D1AA-378D-48CB-9EA2-AE756B3D9473} = {D2CBE02E-6AA7-4343-9A01-891F971A17F5}
+		{799D02D4-0423-4059-B1AA-501FA1EB2116} = {B9938A83-271F-4269-871B-A6DA15E476BD}
+		{D1EA57A5-82FB-472D-97CE-A8927CAA154B} = {8D83D1AA-378D-48CB-9EA2-AE756B3D9473}
 	EndGlobalSection
 EndGlobal
