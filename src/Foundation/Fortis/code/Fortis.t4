@@ -146,7 +146,7 @@ public void GenerateTemplate(ITemplate template)
 <#+ if (IsSupportedSearchFieldType(field.TypeKey)) { #>
 		[IndexField("<#= GetFieldSearchKey(field.Key, field.TypeKey) #>")]
 <#+ } #>
- 		public <#= GetReturnType(GetFieldWrapperType(field.TypeKey)) #> <#= TitleCase(field.Name) #>Value => this.<#= TitleCase(field.Name) #>.Value;
+ 		public <#= GetReturnType(GetFieldWrapperType(field.TypeKey)) #> <#= SafeFieldName(field.Name, template.Name) #>Value => this.<#= SafeFieldName(field.Name, template.Name) #>.Value;
 <#+
 		}
 #>
@@ -194,8 +194,8 @@ public void GenerateRenderingParametersTemplate(ITemplate template)
         {
 #>
 
-		/// <summary><para>Field: <#= TitleCase(field.Name) #></para><para>Data type: <#= field.TypeName #></para></summary>
-		public virtual I<#= GetFieldWrapperType(field.TypeKey) #> <#= TitleCase(field.Name) #> => (Fortis.Model.RenderingParameters.Fields.<#= GetFieldWrapperType(field.TypeKey) #>)this.GetField("<#= field.Name #>", "<#= field.TypeKey #>");
+		/// <summary><para>Field: <#= TitleCase(field.Name) #> | <#= TitleCase(template.Name) #></para><para>Data type: <#= field.TypeName #></para></summary>
+		public virtual I<#= GetFieldWrapperType(field.TypeKey) #> <#= SafeFieldName(field.Name, template.Name) #> => (Fortis.Model.RenderingParameters.Fields.<#= GetFieldWrapperType(field.TypeKey) #>)this.GetField("<#= field.Name #>", "<#= field.TypeKey #>");
 <#+
 		}
 #>	
@@ -212,13 +212,21 @@ public string RelativeNamespace(string templatePath)
 	{
 		relativeNamespace = "ScSystem";
 	}
-	else if (templatePath.StartsWith(ClientTemplatePath))
+	else if (templatePath.StartsWith(ProjectTemplatePath))
 	{
-		relativeNamespace = RelativeNameSpaceUserDefined;
+		relativeNamespace = "Project";
+	}
+	else if (templatePath.StartsWith(FoundationTemplatePath))
+	{
+		relativeNamespace = "Foundation";
+	}
+	else if (templatePath.StartsWith(FeatureTemplatePath))
+	{
+		relativeNamespace = "Feature";
 	}
 	else
 	{
-		relativeNamespace = "Ignite";
+		relativeNamespace = "Fortis";
 	}
 	
 	return relativeNamespace;
@@ -231,13 +239,7 @@ public string FullNamespace(string templatePath)
 
 public string SafeFieldName(string name, string className)
 {
-	var fieldName = TitleCase(name);
-	if (fieldName == className) 
-	{
-		fieldName += "Field";
-	}
-
-	return fieldName;
+	return TitleCase(name);
 }
 
 public string TitleCase(string name)

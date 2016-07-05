@@ -1,147 +1,167 @@
 ﻿namespace Sitecore.Feature.Navigation.Repositories
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using Sitecore;
-  using Sitecore.Data.Items;
-  using Sitecore.Feature.Navigation.Models;
-  using Sitecore.Foundation.SitecoreExtensions.Extensions;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 
-  public class NavigationRepository : INavigationRepository
-  {
-    public Item ContextItem { get; }
-    public Item NavigationRoot { get; }
+	using Fortis.Model;
 
-    public NavigationRepository(Item contextItem)
-    {
-      this.ContextItem = contextItem;
-      this.NavigationRoot = this.GetNavigationRoot(this.ContextItem);
-      if (this.NavigationRoot == null)
-      {
-        throw new InvalidOperationException($"Cannot determine navigation root from '{this.ContextItem.Paths.FullPath}'");
-      }
-    }
+	using Sitecore.Common.Model.Templates.Feature;
+	using Sitecore.Feature.Navigation.Models;
+	using Sitecore.Foundation.Fortis;
 
-    public Item GetNavigationRoot(Item contextItem)
-    {
-      return contextItem.GetAncestorOrSelfOfTemplate(Templates.NavigationRoot.ID) ??
-             Sitecore.Context.Site.GetContextItem(Templates.NavigationRoot.ID);
-    }
+	public class NavigationRepository : INavigationRepository
+	{
+		private readonly IItemFactory itemFactory;
 
-    public NavigationItems GetBreadcrumb()
-    {
-      var items = new NavigationItems
-      {
-        Items = this.GetNavigationHierarchy(true).Reverse().ToList()
-      };
+		public ICustomItemWrapper ContextItem { get; }
+		public ICustomItemWrapper NavigationRoot { get; }
 
-      for (var i = 0; i < items.Items.Count - 1; i++)
-      {
-        items.Items[i].Level = i;
-        items.Items[i].IsActive = i == (items.Items.Count-1);
-      }
+		public NavigationRepository(IItemFactory itemFactory)
+		{
+			this.itemFactory = itemFactory;
+			this.ContextItem = itemFactory.GetContextItem<ICustomItemWrapper>();
+			this.NavigationRoot = this.GetNavigationRoot(this.ContextItem);
+			if (this.NavigationRoot == null)
+			{
+				throw new InvalidOperationException($"Cannot determine navigation root from '{this.ContextItem.FullPath}'");
+			}
+		}
 
-      return items;
-    }
+		public ICustomItemWrapper GetNavigationRoot(ICustomItemWrapper contextItem)
+		{
+			return contextItem.AncestorOrSelf<INavigationRoot>() ?? 
+				this.itemFactory.GetContextItem<INavigationRoot>();
+		}
 
-    public NavigationItems GetPrimaryMenu()
-    {
-      var navItems = this.GetChildNavigationItems(this.NavigationRoot, 0, 1);
+		public NavigationItems GetBreadcrumb()
+		{
+			var items = new NavigationItems
+			{
+				Items = this.GetNavigationHierarchy(true).Reverse().ToList()
+			};
 
-      this.AddRootToPrimaryMenu(navItems);
-      return navItems;
-    }
+			for (var i = 0; i < items.Items.Count - 1; i++)
+			{
+				items.Items[i].Level = i;
+				items.Items[i].IsActive = i == (items.Items.Count - 1);
+			}
 
-    private void AddRootToPrimaryMenu(NavigationItems navItems)
-    {
-      if (!this.IncludeInNavigation(this.NavigationRoot))
-      {
-        return;
-      }
+			return items;
+		}
 
-      var navigationItem = this.CreateNavigationItem(this.NavigationRoot, 0, 0);
-      //Root navigation item is only active when we are actually on the root item
-      navigationItem.IsActive = this.ContextItem.ID == this.NavigationRoot.ID;
-      navItems?.Items?.Insert(0, navigationItem);
-    }
+		public NavigationItems GetPrimaryMenu()
+		{
+			var navItems = this.GetChildNavigationItems(this.NavigationRoot, 0, 1);
 
-    private bool IncludeInNavigation(Item item, bool forceShowInMenu = false)
-    {
-      return item.HasContextLanguage() && item.IsDerived(Templates.Navigable.ID) && (forceShowInMenu || MainUtil.GetBool(item[Templates.Navigable.Fields.ShowInNavigation], false));
-    }
+			this.AddRootToPrimaryMenu(navItems);
+			return navItems;
+		}
 
-    public NavigationItem GetSecondaryMenuItem()
-    {
-      var rootItem = this.GetSecondaryMenuRoot();
-      return rootItem == null ? null : this.CreateNavigationItem(rootItem, 0, 3);
-    }
+		private void AddRootToPrimaryMenu(NavigationItems navItems)
+		{
+			if (!this.IncludeInNavigation(this.NavigationRoot))
+			{
+				return;
+			}
 
-    public NavigationItems GetLinkMenuItems(Item menuRoot)
-    {
-      if (menuRoot == null)
-      {
-        throw new ArgumentNullException(nameof(menuRoot));
-      }
-      return this.GetChildNavigationItems(menuRoot, 0, 0);
-    }
+			var navigationItem = this.CreateNavigationItem(this.NavigationRoot, 0, 0);
+			//Root navigation item is only active when we are actually on the root item
+			navigationItem.IsActive = this.ContextItem.ItemID == this.NavigationRoot.ItemID;
+			navItems?.Items?.Insert(0, navigationItem);
+		}
 
-    private Item GetSecondaryMenuRoot()
-    {
-      return this.FindActivePrimaryMenuItem();
-    }
+		private bool IncludeInNavigation(ICustomItemWrapper item, bool forceShowInMenu = false)
+		{
+			var navigable = item as INavigable;
+			return item.HasContextLanguage() && navigable != null && (forceShowInMenu || navigable.ShowInNavigation.Value);
+		}
 
-    private Item FindActivePrimaryMenuItem()
-    {
-      var primaryMenuItems = this.GetPrimaryMenu();
-      //Find the active primary menu item
-      var activePrimaryMenuItem =
-        primaryMenuItems.Items.FirstOrDefault(i => i.Item.ID != this.NavigationRoot.ID && i.IsActive);
-      return activePrimaryMenuItem?.Item;
-    }
+		public NavigationItem GetSecondaryMenuItem()
+		{
+			var rootItem = this.GetSecondaryMenuRoot();
+			return rootItem == null ? null : this.CreateNavigationItem(rootItem, 0, 3);
+		}
 
-    private IEnumerable<NavigationItem> GetNavigationHierarchy(bool forceShowInMenu = false)
-    {
-      var item = this.ContextItem;
-      while (item != null)
-      {
-        if (this.IncludeInNavigation(item, forceShowInMenu))
-        {
-          yield return this.CreateNavigationItem(item, 0);
-        }
+		public NavigationItems GetLinkMenuItems(ICustomItemWrapper menuRoot)
+		{
+			if (menuRoot == null)
+			{
+				throw new ArgumentNullException(nameof(menuRoot));
+			}
+			return this.GetChildNavigationItems(menuRoot, 0, 0);
+		}
 
-        item = item.Parent;
-      }
-    }
+		private ICustomItemWrapper GetSecondaryMenuRoot()
+		{
+			return this.FindActivePrimaryMenuItem();
+		}
 
-    private NavigationItem CreateNavigationItem(Item item, int level, int maxLevel = -1)
-    {
-      return new NavigationItem
-      {
-        Item = item,
-        Url = (item.IsDerived(Templates.Link.ID) ? item.LinkFieldUrl(Templates.Link.Fields.Link) : item.Url()),
-        Target = (item.IsDerived(Templates.Link.ID) ? item.LinkFieldTarget(Templates.Link.Fields.Link) : ""),
-        IsActive = this.IsItemActive(item),
-        Children = this.GetChildNavigationItems(item, level + 1, maxLevel)
-      };
-    }
+		private ICustomItemWrapper FindActivePrimaryMenuItem()
+		{
+			var primaryMenuItems = this.GetPrimaryMenu();
+			//Find the active primary menu item
+			var activePrimaryMenuItem =
+			  primaryMenuItems.Items.FirstOrDefault(i => i.Item.ItemID != this.NavigationRoot.ItemID && i.IsActive);
+			return activePrimaryMenuItem?.Item;
+		}
 
-    private NavigationItems GetChildNavigationItems(Item parentItem, int level, int maxLevel)
-    {
-      if (level > maxLevel || !parentItem.HasChildren)
-      {
-        return null;
-      }
-      var childItems = parentItem.Children.Where(item => this.IncludeInNavigation(item)).Select(i => this.CreateNavigationItem(i, level, maxLevel));
-      return new NavigationItems
-      {
-        Items = childItems.ToList()
-      };
-    }
+		private IEnumerable<NavigationItem> GetNavigationHierarchy(bool forceShowInMenu = false)
+		{
+			var item = this.ContextItem;
+			while (item != null)
+			{
+				if (this.IncludeInNavigation(item, forceShowInMenu))
+				{
+					yield return this.CreateNavigationItem(item, 0);
+				}
 
-    private bool IsItemActive(Item item)
-    {
-      return this.ContextItem.ID == item.ID || this.ContextItem.Axes.GetAncestors().Any(a => a.ID == item.ID);
-    }
-  }
+				item = item.Parent<ICustomItemWrapper>();
+			}
+		}
+
+		private NavigationItem CreateNavigationItem(ICustomItemWrapper item, int level, int maxLevel = -1)
+		{
+			string url;
+			string target = string.Empty;
+
+			var link = item as ILink;
+			if (link != null)
+			{
+				url = link.LinkTarget.Url;
+				target = link.LinkTarget.Target;
+			}
+			else
+			{
+				url = item.GenerateUrl();
+			}
+
+			return new NavigationItem
+			{
+				Item = item as Common.Model.Templates.Project.ILinkMenuItem,
+				Url = url,
+				Target = target,
+				IsActive = this.IsItemActive(item),
+				Children = this.GetChildNavigationItems(item, level + 1, maxLevel)
+			};
+		}
+
+		private NavigationItems GetChildNavigationItems(ICustomItemWrapper parentItem, int level, int maxLevel)
+		{
+			if (level > maxLevel || !parentItem.HasChildren)
+			{
+				return null;
+			}
+			var childItems = parentItem.Children<ICustomItemWrapper>().Where(item => this.IncludeInNavigation(item)).Select(i => this.CreateNavigationItem(i, level, maxLevel));
+			return new NavigationItems
+			{
+				Items = childItems.ToList()
+			};
+		}
+
+		private bool IsItemActive(ICustomItemWrapper item)
+		{
+			return this.ContextItem.ItemID == item.ItemID || this.ContextItem.Ancestors<IItemWrapper>().Any(a => a.ItemID == item.ItemID);
+		}
+	}
 }

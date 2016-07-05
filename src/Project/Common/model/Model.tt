@@ -22,11 +22,12 @@
 	var stopwatch = Stopwatch.StartNew();
 
 	string solutionsPath = this.Host.ResolveAssemblyReference("$(SolutionDir)");
-	var myFolder = solutionsPath + @"src\Feature\Navigation\serialization";
+	var myFolder = solutionsPath + @"src";
 
 	var folders = new List<string>
 	{
-		myFolder + @"\Feature.Navigation.Templates"
+		myFolder + @"\Project\Common\serialization\Common.Website.Templates",
+		myFolder + @"\Feature\Navigation\serialization\Feature.Navigation.Templates"
 	};
 #>
 <#@ include file="../../../Foundation/Fortis/code/Fortis.t4" #>
@@ -39,7 +40,11 @@
 	bool IsSolr = false;
 	string SitecoreSystemTemplatePath = "/sitecore/templates/System/";
 	string ClientTemplatePath = "/sitecore/templates/User Defined/";
-	string BaseNamespace = "Sitecore.Feature.Navigation.Model";
+	string ProjectTemplatePath = "/sitecore/templates/Project";
+	string FoundationTemplatePath = "/sitecore/templates/Foundation";
+	string FeatureTemplatePath = "/sitecore/templates/Feature";
+
+	string BaseNamespace = "Sitecore.Common.Model";
 	string RelativeNameSpaceUserDefined = "Habitat";
 	string BaseRenderingParametersTemplateId = "{E13DB450-F493-42D5-B1C1-536A57AED2A6}";
 #>

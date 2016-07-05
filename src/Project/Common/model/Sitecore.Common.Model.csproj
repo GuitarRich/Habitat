@@ -9,12 +9,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{16003E7F-0FAF-4DEE-B13D-DD327E965A98}</ProjectGuid>
+    <ProjectGuid>{FDFB814C-8D88-479A-9FDE-F2B5ADC464E3}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sitecore.Feature.Navigation</RootNamespace>
-    <AssemblyName>Sitecore.Feature.Navigation</AssemblyName>
+    <RootNamespace>Sitecore.Common.Model</RootNamespace>
+    <AssemblyName>Sitecore.Common.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -49,12 +49,8 @@
       <Project>{5cf5fa06-ab27-4df5-a471-ed57ef3e4ae9}</Project>
       <Name>Sitecore.Foundation.Alerts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\Sitecore.Foundation.DependencyInjection.csproj">
-      <Project>{3892870b-1d18-4395-bdfb-beaa1b267a54}</Project>
-      <Name>Sitecore.Foundation.DependencyInjection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Foundation\Fortis\code\Sitecore.Foundation.Fortis.csproj">
-      <Project>{D1EA57A5-82FB-472D-97CE-A8927CAA154B}</Project>
+      <Project>{d1ea57a5-82fb-472d-97ce-a8927caa154b}</Project>
       <Name>Sitecore.Foundation.Fortis</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\foundation\Indexing\code\Sitecore.Foundation.Indexing.csproj">
@@ -65,12 +61,9 @@
       <Project>{b535703f-8d07-4f23-a533-2974bb4cc7b1}</Project>
       <Name>Sitecore.Foundation.SitecoreExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Project\Common\model\Sitecore.Common.Model.csproj">
-      <Project>{fdfb814c-8d88-479a-9fde-f2b5adc464e3}</Project>
-      <Name>Sitecore.Common.Model</Name>
-    </ProjectReference>
-    <Reference Include="Fortis">
+    <Reference Include="Fortis, Version=4.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Fortis.4.0.0-beta4\lib\net45\Fortis.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -81,12 +74,20 @@
       <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.1.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\SimpleInjector.3.1.2\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="Rainbow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Rainbow.Core.1.0.0\lib\net45\Rainbow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rainbow.Storage.Yaml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Rainbow.Storage.Yaml.1.0.0\lib\net45\Rainbow.Storage.Yaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Sitecore.ContentSearch">
       <HintPath>..\..\..\..\lib\Sitecore\Sitecore.ContentSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.ContentSearch.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Sitecore\Sitecore.ContentSearch.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.Kernel">
       <HintPath>..\..\..\..\lib\Sitecore\Sitecore.Kernel.dll</HintPath>
@@ -135,19 +136,19 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Transitus.Rainbow, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Transitus.Rainbow.1.0.4.0\lib\net45\Transitus.Rainbow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\Feature\Feature.Navigation.Serialization.config" />
+    <Content Include="App_Config\Include\Project\Sitecore.Common.Model.config" />
+    <Content Include="Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </Content>
     <Content Include="packages.config" />
-    <Content Include="App_Config\Include\Feature\Feature.Navigation.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
-    <Content Include="Views\Navigation\_SecondaryMenuItems.cshtml" />
-    <Content Include="Views\Navigation\LinkMenu.cshtml" />
-    <Content Include="Views\Navigation\NavigationLinks.cshtml" />
-    <None Include="Views\Web.config" />
-    <Content Include="Views\Navigation\PrimaryMenu.cshtml" />
-    <Content Include="Views\Navigation\SecondaryMenu.cshtml" />
-    <Content Include="Views\Navigation\Breadcrumb.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -159,14 +160,16 @@
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\NavigationController.cs" />
-    <Compile Include="Models\NavigationItem.cs" />
-    <Compile Include="Models\NavigationItems.cs" />
-    <Compile Include="Pipelines\InitializeDependencyInjection\RegisterServices.cs" />
-    <Compile Include="Repositories\INavigationRepository.cs" />
-    <Compile Include="Repositories\NavigationRepository.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Templates.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

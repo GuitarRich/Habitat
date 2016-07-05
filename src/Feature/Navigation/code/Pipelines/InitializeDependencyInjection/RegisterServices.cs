@@ -8,7 +8,7 @@
     {
         public void Process(InitializeDependencyInjectionArgs args)
         {
-            args.Container.Register<INavigationRepository>(() => new NavigationRepository(RenderingContext.Current.Rendering.Item));
+            args.Container.Register<INavigationRepository, NavigationRepository>();
         }
     }
 }

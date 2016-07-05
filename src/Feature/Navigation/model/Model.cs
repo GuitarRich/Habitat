@@ -1,7 +1,7 @@
 ﻿/*
  * Fortis Template Models for Poker Central
  *
- * Generated at 06/02/2016 14:14:44
+ * Generated at 06/07/2016 09:23:56
  */
 
 // ReSharper disable PartialTypeWithSinglePart
@@ -22,7 +22,7 @@ using Fortis.Model.Fields;
 using Fortis.Providers;
 
 #region _Link (Ignite)
-namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
+namespace Sitecore.Feature.Navigation.Model.Templates.Ignite
 {
 	/* 
 	 * Base Templates Count:	[0] 
@@ -34,13 +34,13 @@ namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
 	public partial interface ILink : ICustomItemWrapper
 	{
 
-    	/// <summary><para>Template: _Link</para><para>Field: Link</para><para>Data type: General Link</para></summary>
-		[IndexField("link")]
-		IGeneralLinkFieldWrapper Link { get; }
+    	/// <summary><para>Template: _Link</para><para>Field: Navigation Link</para><para>Data type: General Link</para></summary>
+		[IndexField("navigation_link")]
+		IGeneralLinkFieldWrapper NavigationLink { get; }
 
-    	/// <summary><para>Template: _Link</para><para>Field: Link</para><para>Data type: General Link</para></summary>
-		[IndexField("link")]
-		string LinkValue { get; }
+    	/// <summary><para>Template: _Link</para><para>Field: Navigation Link</para><para>Data type: General Link</para></summary>
+		[IndexField("navigation_link")]
+		string NavigationLinkValue { get; }
 	}
 	
 	[PredefinedQuery("TemplateId", ComparisonType.Equal, "{a16b74e9-01b8-439c-b44e-42b3fb2ee14b}", typeof(Guid))]
@@ -53,20 +53,20 @@ namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
 		public Link(Guid id, Dictionary<string, object> lazyFields, ISpawnProvider spawnProvider)
 			: base(id, lazyFields, spawnProvider) { }
 
-		/// <summary><para>Field: Link</para><para>Data type: General Link</para></summary>
-		[IndexField("link")]
-		public virtual IGeneralLinkFieldWrapper Link => this.GetField<GeneralLinkFieldWrapper>("Link");
+		/// <summary><para>Field: NavigationLink</para><para>Data type: General Link</para></summary>
+		[IndexField("navigation_link")]
+		public virtual IGeneralLinkFieldWrapper NavigationLink => this.GetField<GeneralLinkFieldWrapper>("Navigation Link");
 
 		/// <summary>
-		/// Enables searching on the Link field. DO NOT USE FOR POPULATING FIELDS OR RENDERING CONTENT. ONLY USE FOR SITECORE SEARCH API
+		/// Enables searching on the NavigationLink field. DO NOT USE FOR POPULATING FIELDS OR RENDERING CONTENT. ONLY USE FOR SITECORE SEARCH API
 		/// </summary>
-		[IndexField("link")]
- 		public string LinkValue => this.Link.Value;
+		[IndexField("navigation_link")]
+ 		public string NavigationLinkValue => this.NavigationLink.Value;
 	}
 }
 #endregion
 #region _LinkMenuItem (Ignite)
-namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
+namespace Sitecore.Feature.Navigation.Model.Templates.Ignite
 {
 	/* 
 	 * Base Templates Count:	[1] 
@@ -75,7 +75,7 @@ namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
 
 	/// <summary><para>Template: _LinkMenuItem</para><para>ID: {18baf6b0-e0d6-4cce-9184-a4849343e7e4}</para><para>/sitecore/templates/Feature/Navigation/_LinkMenuItem</para></summary>
 	[TemplateMapping("{18baf6b0-e0d6-4cce-9184-a4849343e7e4}", "InterfaceMap")]
-	public partial interface ILinkMenuItem : ICustomItemWrapper, Sitecore.Featrure.Navigation.Model.Templates.Ignite.ILink
+	public partial interface ILinkMenuItem : ICustomItemWrapper, Sitecore.Feature.Navigation.Model.Templates.Ignite.ILink
 	{
 
     	/// <summary><para>Template: _LinkMenuItem</para><para>Field: DividerBefore</para><para>Data type: Checkbox</para></summary>
@@ -125,20 +125,20 @@ namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
 		[IndexField("icon")]
  		public string IconValue => this.Icon.Value;
 
-		/// <summary><para>Field: Link</para><para>Data type: General Link</para></summary>
-		[IndexField("link")]
-		public virtual IGeneralLinkFieldWrapper Link => this.GetField<GeneralLinkFieldWrapper>("Link");
+		/// <summary><para>Field: NavigationLink</para><para>Data type: General Link</para></summary>
+		[IndexField("navigation_link")]
+		public virtual IGeneralLinkFieldWrapper NavigationLink => this.GetField<GeneralLinkFieldWrapper>("Navigation Link");
 
 		/// <summary>
-		/// Enables searching on the Link field. DO NOT USE FOR POPULATING FIELDS OR RENDERING CONTENT. ONLY USE FOR SITECORE SEARCH API
+		/// Enables searching on the NavigationLink field. DO NOT USE FOR POPULATING FIELDS OR RENDERING CONTENT. ONLY USE FOR SITECORE SEARCH API
 		/// </summary>
-		[IndexField("link")]
- 		public string LinkValue => this.Link.Value;
+		[IndexField("navigation_link")]
+ 		public string NavigationLinkValue => this.NavigationLink.Value;
 	}
 }
 #endregion
 #region _Navigable (Ignite)
-namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
+namespace Sitecore.Feature.Navigation.Model.Templates.Ignite
 {
 	/* 
 	 * Base Templates Count:	[0] 
@@ -200,7 +200,7 @@ namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
 }
 #endregion
 #region _NavigationRoot (Ignite)
-namespace Sitecore.Featrure.Navigation.Model.Templates.Ignite
+namespace Sitecore.Feature.Navigation.Model.Templates.Ignite
 {
 	/* 
 	 * Base Templates Count:	[0] 

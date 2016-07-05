@@ -1,59 +1,67 @@
 ﻿namespace Sitecore.Feature.Navigation.Controllers
 {
-  using System.Web.Mvc;
-  using Sitecore.Feature.Navigation.Repositories;
-  using Sitecore.Foundation.Alerts.Extensions;
-  using Sitecore.Foundation.Alerts.Models;
-  using Sitecore.Foundation.SitecoreExtensions.Repositories;
-  using Sitecore.Mvc.Presentation;
+	using System.Web.Mvc;
 
-  public class NavigationController : Controller
-  {
-    private readonly INavigationRepository _navigationRepository;
+	using Fortis.Model;
 
-    public NavigationController(INavigationRepository navigationRepository)
-    {
-      _navigationRepository = navigationRepository;
-    }
+	using Sitecore.Feature.Navigation.Repositories;
+	using Sitecore.Foundation.Alerts.Extensions;
+	using Sitecore.Foundation.Alerts.Models;
+	using Sitecore.Foundation.Fortis;
+	using Sitecore.Foundation.SitecoreExtensions.Repositories;
 
-    public ActionResult Breadcrumb()
-    {
-      var items = _navigationRepository.GetBreadcrumb();
-      return View("Breadcrumb", items);
-    }
+	public class NavigationController : Controller
+	{
+		private readonly INavigationRepository _navigationRepository;
+		private readonly IItemFactory _itemFactory;
 
-    public ActionResult PrimaryMenu()
-    {
-      var items = _navigationRepository.GetPrimaryMenu();
-      return View("PrimaryMenu", items);
-    }
+		public NavigationController(INavigationRepository navigationRepository, IItemFactory itemFactory)
+		{
+			_navigationRepository = navigationRepository;
+			_itemFactory = itemFactory;
+		}
 
-    public ActionResult SecondaryMenu()
-    {
-      var item = _navigationRepository.GetSecondaryMenuItem();
-      return View("SecondaryMenu", item);
-    }
+		public ActionResult Breadcrumb()
+		{
+			var items = _navigationRepository.GetBreadcrumb();
+			return View("Breadcrumb", items);
+		}
 
-    public ActionResult NavigationLinks()
-    {
-      if (string.IsNullOrEmpty(RenderingContext.Current.Rendering.DataSource))
-      {
-        return null;
-      }
-      var item = RenderingContext.Current.Rendering.Item;
-      var items = this._navigationRepository.GetLinkMenuItems(item);
-      return this.View(items);
-    }
+		public ActionResult PrimaryMenu()
+		{
+			var items = _navigationRepository.GetPrimaryMenu();
+			return View("PrimaryMenu", items);
+		}
 
-    public ActionResult LinkMenu()
-    {
-      if (string.IsNullOrEmpty(RenderingContext.Current.Rendering.DataSource))
-      {
-        return Context.PageMode.IsExperienceEditor ? this.InfoMessage(new InfoMessage(DictionaryRepository.Get("/navigation/linkmenu/noitems", "This menu has no items."), InfoMessage.MessageType.Warning)) : null;
-      }
-      var item = RenderingContext.Current.Rendering.Item;
-      var items = _navigationRepository.GetLinkMenuItems(item);
-      return View("LinkMenu", items);
-    }
-  }
+		public ActionResult SecondaryMenu()
+		{
+			var item = _navigationRepository.GetSecondaryMenuItem();
+			return View("SecondaryMenu", item);
+		}
+
+		public ActionResult NavigationLinks()
+		{
+			var renderingContextItems = this._itemFactory.GetRenderingContextItems<ICustomItemWrapper, ICustomItemWrapper>();
+
+			if (renderingContextItems.RenderingItem == null)
+			{
+				return null;
+			}
+
+			var items = this._navigationRepository.GetLinkMenuItems(renderingContextItems.RenderingItem);
+			return this.View(items);
+		}
+
+		public ActionResult LinkMenu()
+		{
+			var renderingContextItems = this._itemFactory.GetRenderingContextItems<ICustomItemWrapper, ICustomItemWrapper>();
+
+			if (renderingContextItems.RenderingItem == null)
+			{
+				return Context.PageMode.IsExperienceEditor ? this.InfoMessage(new InfoMessage(DictionaryRepository.Get("/navigation/linkmenu/noitems", "This menu has no items."), InfoMessage.MessageType.Warning)) : null;
+			}
+			var items = _navigationRepository.GetLinkMenuItems(renderingContextItems.RenderingItem);
+			return View("LinkMenu", items);
+		}
+	}
 }
