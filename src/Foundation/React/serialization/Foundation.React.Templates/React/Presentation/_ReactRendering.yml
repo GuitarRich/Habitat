@@ -1,0 +1,14 @@
+﻿---
+ID: "080fb949-6eb3-42ed-8bfc-e8a15cf85cf2"
+Parent: "64db52a9-99c2-4a2f-b497-ef8cc5d51e71"
+Template: "ab86861a-6030-46c5-b394-e8f99e8b87db"
+Path: /sitecore/templates/Foundation/React/Presentation/_ReactRendering
+DB: master
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20160720T010336:636045734160010239Z"
