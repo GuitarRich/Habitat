@@ -6,12 +6,12 @@
 				<div className="panel-title">
 					<a role="button" className="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href={'#faq' + this.props.data.Id}>
 						<span className="glyphicon glyphicon-search" aria-hidden="true"></span>
-						<span dangerouslySetInnerHTML={{__html: this.props.data.Question}} />
+						<span dangerouslySetInnerHTML={{ __html: this.props.data.Question }} />
 					</a>
 				</div>
 			</div>
 			<div id={'faq' + this.props.data.Id} className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingcollapse0">
-				<div className="panel-body" dangerouslySetInnerHTML={{__html: this.props.data.Answer}} />
+				<div className="panel-body" dangerouslySetInnerHTML={{ __html: this.props.data.Answer }} />
 			</div>
 		</div>
 		);

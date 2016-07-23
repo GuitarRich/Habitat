@@ -36,6 +36,7 @@
 			{
 				faqItems.Add(new FaqItem
 				{
+					Id = item.ID.ToShortID().ToString(),
 					Question = FieldRenderer.Render(item, Templates.Faq.Fields.Question.ToString()),
 					Answer = FieldRenderer.Render(item, Templates.Faq.Fields.Answer.ToString())
 				});

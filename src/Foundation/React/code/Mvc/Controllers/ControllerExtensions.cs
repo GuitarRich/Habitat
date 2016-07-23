@@ -22,9 +22,9 @@
 				ViewName = viewName,
 				ViewData = controller.ViewData,
 				ViewEngineCollection = controller.ViewEngineCollection,
+				ComponentName = component
 			};
 
-			jsxResult.TempData.Add("jsxComponent", component);
 			return jsxResult;
 		}
 	}

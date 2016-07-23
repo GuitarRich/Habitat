@@ -76,6 +76,5 @@
 				DisplayModeProvider = this.DisplayModeProvider
 			};
 		}
-
 	}
 }

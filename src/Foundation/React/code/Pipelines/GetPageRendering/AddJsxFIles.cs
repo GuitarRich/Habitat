@@ -16,19 +16,13 @@ namespace Sitecore.Foundation.React.Pipelines.GetPageRendering
 
 	public class AddJsxFIles : GetPageRenderingProcessor
 	{
-		private const string ReactJsScript = "//fb.me/react-15.0.1.js";
-		private const string ReactJsDomScript = "//fb.me/react-dom-15.0.1.js";
-
 		public override void Process(GetPageRenderingArgs args)
 		{
-
-			AssetRepository.Current.AddScript(ReactJsScript, true);
-			AssetRepository.Current.AddScript(ReactJsDomScript, true);
-
 			this.AddRenderingAssets(args.PageContext.PageDefinition.Renderings);
 
 			// Create the bundle for the render
 			var bundle = new BabelBundle("~/bundles/react");
+
 			foreach (var jsxFile in JsxRepository.Current.Items)
 			{
 				bundle.Include(jsxFile);
