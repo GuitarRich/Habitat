@@ -6,7 +6,9 @@
   using FluentAssertions;
   using NSubstitute;
   using NSubstitute.Extensions;
+  using Ploeh.AutoFixture.Xunit2;
   using Sitecore.Abstractions;
+  using Sitecore.Common;
   using Sitecore.ContentSearch;
   using Sitecore.ContentSearch.Linq.Common;
   using Sitecore.ContentSearch.SearchTypes;
@@ -15,12 +17,10 @@
   using Sitecore.Data.Items;
   using Sitecore.FakeDb;
   using Sitecore.FakeDb.AutoFixture;
-  using Sitecore.FakeDb.Pipelines;
   using Sitecore.Foundation.Indexing.Models;
   using Sitecore.Foundation.Indexing.Rendering;
   using Sitecore.Foundation.SitecoreExtensions.Repositories;
   using Sitecore.Foundation.Testing.Attributes;
-  using Sitecore.Foundation.Testing.Pipelines;
   using Sitecore.Mvc.Common;
   using Sitecore.Mvc.Presentation;
   using Sitecore.Pipelines;
@@ -29,24 +29,9 @@
 
   public class QueryableDatasourceRenderingModelTests
   {
-    public class FakeDatasourceResolverPipeline : IPipelineProcessor
-    {
-      public Item Item { get; set; }
-
-      public void Process(PipelineArgs args)
-      {
-        var castedArgs = args as GetRenderingDatasourceArgs;
-        if (castedArgs != null)
-        {
-          castedArgs.Prototype = this.Item;
-        }
-      }
-    }
-
-
     [Theory]
     [AutoDbData]
-    public void Items_DifferentItemLanguageExists_ReturnsOnlyContextLanguage([Content] DbItem[] contentItems, ISearchIndex index, [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_DifferentItemLanguageExists_ReturnsOnlyContextLanguage([Content] DbItem[] contentItems, ISearchIndex index, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var results = GetResults(contentItems).ToArray();
@@ -74,7 +59,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_NotLatestItemVersionExists_ReturnsOnlyLatestItems([Content] DbItem[] contentItems, ISearchIndex index, [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_NotLatestItemVersionExists_ReturnsOnlyLatestItems([Content] DbItem[] contentItems, ISearchIndex index, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var results = GetResults(contentItems).ToArray();
@@ -102,7 +87,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_IndexMatchDb_ReturnsAllItems([Content] DbItem[] contentItems, ISearchIndex index, [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_IndexMatchDb_ReturnsAllItems([Content] DbItem[] contentItems, ISearchIndex index, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var results = GetResults(contentItems);
@@ -129,7 +114,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_StandardValuesExistsInContentTree_IgnoresStandartValueByName(Db db, ISearchIndex index, [ReplaceSearchProvider] SearchProvider searchProvider, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_StandardValuesExistsInContentTree_IgnoresStandartValueByName(Db db, ISearchIndex index, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var id = ID.NewID;
@@ -163,10 +148,15 @@
 
     [Theory]
     [AutoDbData]
-    public void Initialize_TemplateResolved_DatasourceTemplateShouldBeSet([Content] DbTemplate templateItem, [ResolvePipeline("getRenderingDatasource")] FakeDatasourceResolverPipeline processor, [Content] Item renderingItem)
+    public void Initialize_TemplateResolved_DatasourceTemplateShouldBeSet([Content] DbTemplate templateItem, [Content] Item renderingItem,
+      [Greedy] QueryableDatasourceRenderingModel renderingModel)
     {
       //arrange
-      processor.Item = renderingItem.Database.GetItem(templateItem.ID);
+      renderingItem = renderingItem.Database.GetItem(templateItem.ID);
+      renderingModel.CorePipeline
+        .When(cp => cp.Run("getRenderingDatasource", Arg.Is<GetRenderingDatasourceArgs>(a => a.RenderingItem == renderingItem)))
+        .Do(ci => ci.Arg<GetRenderingDatasourceArgs>().Prototype = renderingItem);
+
       var rendering = new Rendering
       {
         DataSource = "ds",
@@ -174,10 +164,9 @@
       };
       ContextService.Get().Push(new PageContext());
       PageContext.Current.Item = renderingItem;
-      var renderingModel = new QueryableDatasourceRenderingModel();
+
       //act
       renderingModel.Initialize(rendering);
-
 
       //assert
       renderingModel.DatasourceTemplate.Should().NotBeNull();
@@ -187,7 +176,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_ItemTemplateSet_FiltersByTemplateId(Db db, [Content] DbTemplate templateItem, [Content] DbItem[] contentItems, ISearchIndex index, [ReplaceSearchProvider] SearchProvider searchProvider, string indexName, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_ItemTemplateSet_FiltersByTemplateId(Db db, [Content] DbTemplate templateItem, [Content] DbItem[] contentItems, ISearchIndex index, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, string indexName, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var dbItem = new DbItem("templated", ID.NewID, templateItem.ID);
@@ -224,7 +213,8 @@
     [AutoDbData]
     public void Items_IndexHaveNonexistentItems_ReturnsExistentItems([Content] DbItem[] contentItems, DbItem brokenItem,
       List<DbItem> indexedItems, ISearchIndex index, string indexName,
-      [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+      [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher,
+      [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       indexedItems.AddRange(contentItems);
@@ -255,7 +245,8 @@
     [Theory]
     [AutoDbData]
     public void Items_StandardValuesExists_IgnoresItemsUnderTemplates(Db db, ISearchIndex index,
-      [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+      [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher,
+      [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       var templateID = ID.NewID;
@@ -290,7 +281,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_IndexEmpty_ReturnsEmptyCollection([ResolvePipeline("getRenderingDatasource")] EmptyPipeline processor, List<DbItem> indexedItems, ISearchIndex index, string indexName, [ReplaceSearchProvider] SearchProvider searchProvider, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
+    public void Items_IndexEmpty_ReturnsEmptyCollection(List<DbItem> indexedItems, ISearchIndex index, string indexName, [Frozen] SearchProvider searchProvider, Switcher<SearchProvider> searchProviderSwitcher, [Content] Item renderingItem, IRenderingPropertiesRepository renderingPropertiesRepository)
     {
       //arrange
       InitIndexes(index, searchProvider, new List<SearchResultItem>().AsQueryable());
@@ -315,7 +306,7 @@
 
     [Theory]
     [AutoDbData]
-    public void Items_EmptyDatasource_ReturnsEmptyCollection([ResolvePipeline("getRenderingDatasource")] EmptyPipeline processor, List<DbItem> indexedItems, SearchProvider searchProvider, ISearchIndex index, string indexName, [Content] Item renderingItem)
+    public void Items_EmptyDatasource_ReturnsEmptyCollection(List<DbItem> indexedItems, SearchProvider searchProvider, ISearchIndex index, string indexName, [Content] Item renderingItem)
     {
       //arrange
 
@@ -333,12 +324,12 @@
 
     [Theory]
     [AutoDbData]
-    public void DatasourceString_EmptyDatasource_ContextItemAsLocationRoot([ResolvePipeline("getRenderingDatasource")] EmptyPipeline processor, [Content] Item renderingItem)
+    public void DatasourceString_EmptyDatasource_ContextItemAsLocationRoot([Content] Item renderingItem,
+      [Greedy] QueryableDatasourceRenderingModel renderingModel)
     {
       //arrange
       ContextService.Get().Push(new PageContext());
       PageContext.Current.Item = renderingItem;
-      var renderingModel = new QueryableDatasourceRenderingModel();
 
       //act
       renderingModel.Initialize(new Rendering
@@ -353,12 +344,12 @@
 
     [Theory]
     [AutoDbData]
-    public void DatasourceString_IdAsDatasource_IDSetAsLocationRoot([ResolvePipeline("getRenderingDatasource")] EmptyPipeline processor, [Content] Item renderingItem)
+    public void DatasourceString_IdAsDatasource_IDSetAsLocationRoot([Content] Item renderingItem,
+      [Greedy] QueryableDatasourceRenderingModel renderingModel)
     {
       //arrange
       ContextService.Get().Push(new PageContext());
       PageContext.Current.Item = renderingItem;
-      var renderingModel = new QueryableDatasourceRenderingModel();
       var dataSource = ID.NewID.ToString();
 
       //act
@@ -372,6 +363,21 @@
       renderingModel.DatasourceString.Should().Be("+location:" + dataSource);
     }
 
+    [Fact]
+    public void SutInstantiatesDefaultCorePipelineWrapper()
+    {
+      var sut = new QueryableDatasourceRenderingModel();
+      sut.CorePipeline.Should().BeOfType<CorePipelineWrapper>();
+    }
+
+    [Theory, AutoDbData]
+    public void SutInstantiatesCustomCorePipelineWrapper(
+      IRenderingPropertiesRepository renderingRepository,
+      ICorePipeline corePipeline)
+    {
+      var sut = new QueryableDatasourceRenderingModel(renderingRepository, corePipeline);
+      sut.CorePipeline.Should().BeSameAs(corePipeline);
+    }
 
     private static IQueryable<IndexedItem> GetResults(IEnumerable<DbItem> contentItems)
     {
