@@ -59,9 +59,14 @@ gulp.task("CI-Enumerate-Files", function () {
 
 gulp.task("CI-Enumerate-Items", function () {
     var itemPaths = [];
-
-    return gulp.src("./src/**/serialization/**/*.yml")
+    var allowedPatterns = [
+      "./src/**/serialization/**/*.yml",
+      "!./src/**/serialization/*.Roles/**/*.yml",
+      "!./src/**/serialization/*.Users/**/*.yml"
+    ];
+    return gulp.src(allowedPatterns)
         .pipe(foreach(function (stream, file) {
+        console.log(file);
             var itemPath = unicorn.getFullItemPath(file);
             itemPaths.push(itemPath);
             return stream;
@@ -77,7 +82,7 @@ gulp.task("CI-Enumerate-Items", function () {
 gulp.task("CI-Enumerate-Users", function () {
     var users = [];
 
-    return gulp.src("./src/**/users/**/*.user")
+    return gulp.src("./src/**/serialization/*.Users/**/*.yml")
         .pipe(foreach(function (stream, file) {
             var fileContent = file.contents.toString();
             var userName = unicorn.getUserPath(file);
@@ -95,7 +100,7 @@ gulp.task("CI-Enumerate-Users", function () {
 gulp.task("CI-Enumerate-Roles", function () {
     var roles = [];
 
-    return gulp.src("./src/**/roles/**/*.role")
+    return gulp.src("./src/**/serialization/*.Roles/**/*.yml")
         .pipe(foreach(function (stream, file) {
             var fileContent = file.contents.toString();
             var roleName = unicorn.getRolePath(file);            

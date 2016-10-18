@@ -1,22 +1,20 @@
 ﻿---
 ID: "52a898d9-6d20-43fd-9798-1578b14a117c"
 Parent: "b6f628e5-5f85-4f98-9041-0d203e0ebf17"
-Template: "f31db7e6-605c-4ef3-84c8-4238961f5649"
+Template: "99f8905d-4a87-4eb8-9f8b-a9bebfb3add6"
 Path: /sitecore/layout/Renderings/Feature/FAQ/FAQ Accordion
 DB: master
 SharedFields:
+- ID: "51b435bc-f7b9-478a-9c51-52916af96ff5"
+  Hint: Path
+  Value: /Views/FAQ/FaqAccordion.cshtml
 - ID: "b5b27af1-25ef-405c-87ce-369b3a004016"
   Hint: Datasource Location
   Value: "site:faq"
 - ID: "c7c26117-dbb1-42b2-ab5e-f7223845cca3"
   Hint: __Thumbnail
-  Value: "<image mediaid=\"{85C963E8-6944-4B79-A532-195E57F87423}\" />"
-- ID: "ded9e431-3604-4921-a4b3-a6ec7636a5b6"
-  Hint: Controller Action
-  Value: FaqAccordionReact
-- ID: "e64ad073-dfcc-4d20-8c0b-fe5aa6226cd7"
-  Hint: Controller
-  Value: Sitecore.Feature.FAQ.Controllers.FaqController, Sitecore.Feature.FAQ
+  Value: |
+    <image mediaid="{85C963E8-6944-4B79-A532-195E57F87423}" />
 Languages:
 - Language: en
   Versions:
@@ -25,6 +23,3 @@ Languages:
     - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
       Hint: __Created
       Value: 20160128T144427Z
-    - ID: "32dc983f-cd27-4644-8a40-41f86aa464e4"
-      Hint: JSX File
-      Value: ~/Views/FAQ/FaqAccordionReact.jsx
