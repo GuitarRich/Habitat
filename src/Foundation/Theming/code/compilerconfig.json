@@ -1,22 +1,27 @@
-﻿[
+[
   {
     "outputFile": "styles/editor.css",
-    "inputFile": "styles/editor.scss"
+    "inputFile": "bower_components/sitecore.demo.theme/sass/editor.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "styles/niteflight.css",
-    "inputFile": "styles/niteflight.scss"
+    "inputFile": "bower_components/sitecore.demo.theme/sass/niteflight.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "styles/dayfrost.css",
-    "inputFile": "styles/dayfrost.scss"
+    "inputFile": "bower_components/sitecore.demo.theme/sass/dayfrost.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "styles/white-wonder.css",
-    "inputFile": "styles/white-wonder.scss"
+    "inputFile": "bower_components/sitecore.demo.theme/sass/white-wonder.scss",
+    "sourceMap": false
   },
   {
     "outputFile": "styles/default.css",
-    "inputFile": "styles/default.scss"
+    "inputFile": "bower_components/sitecore.demo.theme/sass/default.scss",
+    "sourceMap": false
   }
 ]
